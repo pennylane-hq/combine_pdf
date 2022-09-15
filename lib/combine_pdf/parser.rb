@@ -373,9 +373,9 @@ module CombinePDF
           # instead, a non-strict RegExp is used:
 
           # raise error if the stream doesn't end.
-          unless @scanner.skip_until(/endstream/ || nil)
-            raise ParsingError, "Parsing Error: PDF file error - a stream object wasn't properly closed using 'endstream'!"
-          end
+          # unless @scanner.skip_until(/endstream/)
+          #   raise ParsingError, "Parsing Error: PDF file error - a stream object wasn't properly closed using 'endstream'!"
+          # end
 
           length = @scanner.pos - (old_pos + 9)
           length = 0 if(length < 0)
@@ -502,6 +502,7 @@ module CombinePDF
           # warn "Advancing for unknown reason... #{@scanner.string[@scanner.pos - 4, 8]} ... #{@scanner.peek(4)}" unless @scanner.peek(1) =~ /[\s\n]/
           warn 'Warning: parser advancing for unknown reason. Potential data-loss.'
           @scanner.pos = @scanner.pos + 1
+          return out if @scanner.eos?
         end
       end
       out
