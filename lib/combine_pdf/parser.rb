@@ -371,7 +371,11 @@ module CombinePDF
           # the following was dicarded because some PDF files didn't have an EOL marker as required
           # str = @scanner.scan_until(/(\r\n|\r|\n)endstream/)
           # instead, a non-strict RegExp is used:
-          
+
+          # raise error if the stream doesn't end.
+          unless @scanner.skip_until(/endstream/ || nil)
+            raise ParsingError, "Parsing Error: PDF file error - a stream object wasn't properly closed using 'endstream'!"
+          end
 
           length = @scanner.pos - (old_pos + 9)
           length = 0 if(length < 0)
