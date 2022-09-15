@@ -502,7 +502,10 @@ module CombinePDF
           # warn "Advancing for unknown reason... #{@scanner.string[@scanner.pos - 4, 8]} ... #{@scanner.peek(4)}" unless @scanner.peek(1) =~ /[\s\n]/
           warn 'Warning: parser advancing for unknown reason. Potential data-loss.'
           @scanner.pos = @scanner.pos + 1
-          return out if @scanner.eos?
+          if @scanner.eos?
+            warn 'we break because end of string'
+            break
+          end
         end
       end
       out
